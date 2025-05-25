@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content1 %}
+<div class="auth-container">
+    <h2>Sign Up</h2>
+    <form method="post">
+        {% csrf_token %}
+
+        <label for="{{ form.name.id_for_label }}">Name:</label>
+        {{ form.name }}
+        {% if form.name.errors %}
+            <div class="form-error">{{ form.name.errors.0 }}</div>
+        {% endif %}
+
+        <label for="{{ form.email.id_for_label }}">Email:</label>
+        {{ form.email }}
+        {% if form.email.errors %}
+            <div class="form-error">{{ form.email.errors.0 }}</div>
+        {% endif %}
+
+        <label for="{{ form.password.id_for_label }}">Password:</label>
+        {{ form.password }}
+        {% if form.password.errors %}
+            <div class="form-error">{{ form.password.errors.0 }}</div>
+        {% endif %}
+
+        <label for="{{ form.confirm_password.id_for_label }}">Repeat Password:</label>
+        {{ form.confirm_password }}
+        {% if form.confirm_password.errors %}
+            <div class="form-error">{{ form.confirm_password.errors.0 }}</div>
+        {% endif %}
+
+        <button type="submit" class="auth-btn">Register</button>
+
+        {% if messages %}
+            <div class="form-messages">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </form>
+</div>
+{% endblock %}

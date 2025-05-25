@@ -1,0 +1,119 @@
+.challenges-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+    color: #eaeaea;
+}
+
+.progress-text {
+    background-color: #444;
+    color: #ffd700;
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    user-select: none;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.6);
+    display: inline-block;
+    margin-top: 10px;
+}
+
+.challenges-title {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 4rem;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.challenges-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.challenge-tile {
+    background-color: #222;
+    border-radius: 12px;
+    padding: 20px;
+    width: 350px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.7);
+    transition: background-color 0.3s ease;
+}
+
+.challenge-tile:hover {
+    transform: translateY(-4px);
+}
+
+.challenge-tile.completed {
+    border: 1px solid #5cb85c;
+    background-color: #1f3324;
+}
+
+.tile-icon {
+    font-size: 2.8rem;
+    margin-right: 1rem;
+    flex-shrink: 0;
+}
+
+.tile-content h3 {
+    font-size: 1.2rem;
+    margin: 0 0 0.4rem;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.tile-content p {
+    margin: 0.2rem 0;
+    color: #cfcfcf;
+    margin-bottom: 1rem;
+}
+
+.progress {
+    font-weight: 500;
+    color: #dddddd;
+}
+
+.badge {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.35rem 0.7rem;
+    font-size: 0.85rem;
+    color: #fff;
+    background-color: #28a745;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+.no-challenges {
+    text-align: center;
+    font-style: italic;
+    color: #999;
+}
+
+.redeem-btn {
+    background-color: #4caf50; /* nice green */
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.redeem-btn:hover {
+    background-color: #45a049;
+}
+
+.badge.redeemed {
+    color: #e8ffe9; /* lighter green */
+    font-weight: bold;
+    font-size: 0.9rem;
+}

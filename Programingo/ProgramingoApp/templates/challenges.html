@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  <div class="challenges-container">
+    <h1 class="challenges-title">Daily Challenges</h1>
+    <div class="challenges-grid">
+      {% for progress in user_challenges %}
+        <div class="challenge-tile {% if progress.completed %}completed{% endif %}">
+          <div class="tile-icon">
+            {% if progress.challenge.challenge_type == "points" %}
+              💎
+            {% elif progress.challenge.challenge_type == "lessons" %}
+              📘
+            {% elif progress.challenge.challenge_type == "perfect" %}
+              🎯
+            {% else %}
+              🎲
+            {% endif %}
+          </div>
+          <div class="tile-content">
+            <h3>{{ progress.challenge.title }}</h3>
+            <p>{{ progress.challenge.description }}</p>
+
+            {% if not progress.completed %}
+              <p class="progress-text">Progress: {{ progress.progress }} / {{ progress.challenge.target_value }}</p>
+            {% else %}
+              {% if not progress.rewarded %}
+                <button class="redeem-btn" data-progress-id="{{ progress.id }}">
+                  Redeem {{ progress.challenge.reward_coins }} coins
+                </button>
+              {% else %}
+                <span class="badge redeemed">✔ Completed!</span>
+              {% endif %}
+            {% endif %}
+          </div>
+        </div>
+      {% empty %}
+        <p class="no-challenges">No challenges available.</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <script>
+    document.querySelectorAll('.redeem-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        const progressId = button.getAttribute('data-progress-id');
+        fetch(`/challenges/redeem/${progressId}/`, {
+          method: 'POST',
+          headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+            'Content-Type': 'application/json'
+          },
+          credentials: 'same-origin'
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            const span = document.createElement('span');
+            span.className = 'badge redeemed';
+            span.textContent = '✔ Completed';
+            button.replaceWith(span);
+          } else {
+            alert(data.message || 'Error redeeming reward.');
+          }
+        })
+        .catch(() => alert('Network error'));
+      });
+    });
+  </script>
+{% endblock %}

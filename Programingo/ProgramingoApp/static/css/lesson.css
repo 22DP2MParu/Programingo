@@ -1,0 +1,345 @@
+/* Container that centers content */
+.inlesson-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 1rem;
+    max-height: 70%;
+    background: transparent; /* Remove background */
+}
+
+/* Card styling */
+.inlesson-theory-card {
+    max-width: 720px;
+    width: 100%;
+    background-color: #fff;
+    border-radius: 1.25rem;
+    padding: 2rem 2.5rem;
+    box-shadow: 0 12px 30px rgba(255, 165, 0, 0.15);
+    border-left: 6px solid orange;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    color: #3b3b3b;
+    box-sizing: border-box;
+}
+
+/* Header styles */
+.inlesson-header {
+    text-align: center;
+}
+
+.inlesson-title {
+    font-size: 2.4rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #f97316;
+}
+
+.inlesson-subtitle {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #ef9a1f;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Theory body text */
+.inlesson-theory-text {
+    font-size: 1.2rem;
+    line-height: 1.7;
+    color: #444;
+    white-space: pre-line;
+}
+
+/* Start button footer */
+.inlesson-footer {
+    display: flex;
+    justify-content: center;
+}
+
+.btn-primary {
+    background-color: #f97316;
+    color: white;
+    font-weight: 700;
+    font-size: 1.1rem;
+    padding: 0.8rem 2.2rem;
+    border-radius: 2rem;
+    text-decoration: none;
+    box-shadow: 0 6px 12px rgba(249, 115, 22, 0.3);
+    transition: all 0.3s ease;
+    user-select: none;
+}
+
+.btn-primary:hover {
+    background-color: #ea580c;
+    box-shadow: 0 10px 20px rgba(234, 88, 12, 0.5);
+    transform: translateY(-1px);
+    cursor: pointer;
+}
+
+/*questions*/
+
+/* Page background & layout */
+.question-page {
+    padding: 2rem 1.5rem;
+    max-width: 900px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+    color: #3b3b3b;
+}
+
+/* Progress bar container */
+.progress-bar-container {
+    width: 100%;
+    height: 10px;
+    background-color: #f3f3f3;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background-color: #f97316;
+    width: 0%;
+    transition: width 0.5s ease-in-out;
+}
+
+/* Question title */
+.question-title {
+    color: #fefefe;
+    font-size: 2rem;
+    text-align: center;
+    margin-top: 1rem;
+}
+
+/* Question bubble */
+.question-bubble {
+    background: rgba(249, 115, 22, 0.05); /* very light orange transparent */
+    border: 2px solid rgba(249, 115, 22, 0.2);
+    border-radius: 1.5rem;
+    padding: 1.2rem 2rem;
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    max-width: 100%;
+    box-sizing: border-box;
+    color: #e4e4e4;
+}
+
+/* Answers row */
+.answers-row {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    justify-content: center;
+}
+
+.answer-btn {
+    background-color: transparent;
+    border: 2px solid rgba(255, 165, 0, 0.3);
+    padding: 0.8rem 1.4rem;
+    border-radius: 1.2rem;
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin: 0.5rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.answer-btn.selected {
+    background-color: rgba(255, 165, 0, 0.6);
+    border-color: orange;
+}
+
+.answer-btn.correct {
+    background-color: rgba(34, 197, 94, 0.6); /* green */
+    border-color: green;
+}
+
+.answer-btn.wrong {
+    background-color: rgba(239, 68, 68, 0.6); /* red */
+    border-color: red;
+}
+
+/* Footer */
+.question-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #0f0f0f;
+    padding: 1rem 2rem;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    gap: 1rem;
+    box-sizing: border-box;
+    overflow-x: auto;
+}
+
+/* Check & Next buttons */
+#check-btn,
+#next-btn {
+    flex-shrink: 0;
+    max-width: 45%;
+    background-color: #f97316;
+    color: white;
+    font-weight: bold;
+    padding: 0.7rem 1.4rem;
+    border: none;
+    border-radius: 2rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.hidden {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Feedback text */
+.feedback {
+    flex: 1;
+    min-width: 0;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Correct feedback */
+.feedback.correct {
+    color: #22c55e;
+    animation: fadeInScale 0.4s ease forwards;
+}
+
+/* Wrong feedback */
+.feedback.wrong {
+    color: #ef4444;
+    animation: fadeInScale 0.4s ease forwards;
+}
+
+/* Tick or Cross */
+.result-icon {
+    font-size: 1.6rem;
+    user-select: none;
+}
+
+.question-footer.out-of-hearts {
+    background: #7f1d1d; /* deep red */
+    color: white;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.75rem;
+}
+
+.feedback-out {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: white;
+}
+
+.go-home-btn {
+    background-color: #dc2626;
+    color: white;
+    font-weight: bold;
+    padding: 0.7rem 1.6rem;
+    border-radius: 2rem;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.go-home-btn:hover {
+    background-color: #b91c1c;
+}
+
+/* Animation */
+@keyframes fadeInScale {
+    0% {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/*For results*/
+
+.result-container {
+    max-width: 600px;
+    margin: 4rem auto;
+    background: transparent;
+    padding: 2rem;
+    backdrop-filter: blur(12px);
+    text-align: center;
+    color: white;
+}
+
+.result-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+}
+
+.result-image {
+    height: 150px;
+    margin-bottom: 2rem;
+}
+
+.result-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 2rem;
+    gap: 1rem;
+}
+
+.stat-tile {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.home-link {
+    display: inline-block;
+    margin-top: 3rem;
+    padding: 0.8rem 1.8rem;
+    background-color: #f97316;
+    color: white;
+    border-radius: 2rem;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.home-link:hover {
+    background-color: #ea580c;
+}
+
+.hearts-status {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #ff4f4f;
+    margin-bottom: 0.6rem;
+}
+
+.heart-icon {
+    font-size: 1.5rem;
+}

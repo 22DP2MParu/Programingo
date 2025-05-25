@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Programmingo{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Lexend&display=swap" rel="stylesheet">
+
+    {% if '/lesson/' in request.path %}
+    <link rel="stylesheet" href="{% static 'css/lesson.css' %}">
+    {% endif %}
+
+    {% if '/leaderboard/' in request.path %}
+    <link rel="stylesheet" href="{% static 'css/leaders.css' %}">
+    {% endif %}
+
+    {% if '/challenges/' in request.path %}
+    <link rel="stylesheet" href="{% static 'css/challenges.css' %}">
+    {% endif %}
+
+    {% if request.path == '/' %}
+    <link rel="stylesheet" href="{% static 'css/welcome.css' %}">
+    {% endif %}
+
+</head>
+<body>
+
+{% if user.is_authenticated %}
+    <div class="layout">
+        {% if not request.path|slice:":8" == "/lesson/" %}
+            <div class="sidebar">
+                {% include 'side_nav.html' %}
+            </div>
+        {% endif %}
+        <main class="main-content {% if '/lesson/' in request.path %}no-sidebar-margin{% endif %}">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+    {% else %}
+    <nav class="navbar">
+        <div class="navbar-left">
+            <a href="/" class="brand">Programmingo</a>
+        </div>
+        <div class="navbar-right">
+            <a href="{% url 'login' %}" class="signin-btn">Sign in</a>
+            <a href="{% url 'register' %}"><button class="signup-btn">Sign up</button></a>
+        </div>
+    </nav>
+    </div>
+    <main>
+        {% block content1 %}
+        {% endblock %}
+    </main>
+    {% endif %}
+</body>
+</body>
+</html>

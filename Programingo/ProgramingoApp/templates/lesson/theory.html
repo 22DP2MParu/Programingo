@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="inlesson-page">
+  <div class="inlesson-theory-card">
+    <header class="inlesson-header">
+      <h1 class="inlesson-title">{{ lesson.title }}</h1>
+      <p class="inlesson-subtitle">Theory Page {{ page }}</p>
+    </header>
+
+    <article class="inlesson-theory-text">
+      {{ theory.content|linebreaks }}
+    </article>
+
+    <footer class="inlesson-footer" style="display: flex; justify-content: space-between; gap: 1rem;">
+      {% if page > 1 %}
+        <a class="btn-primary" href="{% url 'lesson_page' lesson.id page|add:'-1' %}">Previous</a>
+      {% else %}
+        <span class="btn-primary" style="opacity: 0.5; pointer-events: none;">Previous</span>
+      {% endif %}
+
+      {% if page < lesson.theory_pages.count %}
+        <a class="btn-primary" href="{% url 'lesson_page' lesson.id page|add:'1' %}">Next</a>
+      {% else %}
+        <a class="btn-primary" href="{% url 'lesson_page' lesson.id page|add:'1' %}">Start Quiz</a>
+      {% endif %}
+    </footer> 
+  </div>
+</div>
+{% endblock %}

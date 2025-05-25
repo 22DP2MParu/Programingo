@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Welcome to Programingo{% endblock %}
+
+{% block content1 %}
+<div class="welcome-wrapper">
+  <div class="welcome-container">
+    <div class="welcome-image">
+      <img src="{% static 'css/images/Mascot1.png' %}" alt="Mascot" />
+    </div>
+    <div class="welcome-text">
+      <h1>Welcome to <span class="highlight">Programmingo</span>!</h1>
+      <p class="lead">Programingo is your personal companion in mastering programming</p>
+      <ul class="features-list">
+        <li>🚀 Track your progress, earn points, and climb the leaderboard!</li>
+        <li>💡 Practice through hands-on tasks and receive instant feedback.</li>
+        <li>🧠 Learn Python, algorithms, and more — the fun way.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}

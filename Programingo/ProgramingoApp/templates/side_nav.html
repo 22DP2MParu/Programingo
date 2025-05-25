@@ -1,0 +1,26 @@
+<nav class="side-nav">
+    <a href="/home" class="brand">Programmingo</a>
+
+    <div class="nav-buttons">
+        <a href="{% url 'home' %}" class="nav-btn {% if request.path == '/home/' %}active{% endif %}">Learning</a>
+        <a href="{% url 'training' %}" class="nav-btn {% if request.path == '/training/' %}active{% endif %}">Training</a>
+        <a href="{% url 'leaderboard' %}" class="nav-btn {% if request.path == '/leagues/' %}active{% endif %}">Leaderboard</a>
+        <a href="{% url 'challenges' %}" class="nav-btn {% if request.path == '/challenges/' %}active{% endif %}">Challenges</a>
+        <a href="{% url 'shop' %}" class="nav-btn {% if request.path == '/shop/' %}active{% endif %}">Shop</a>
+        <a href="{% url 'profile' %}" class="nav-btn {% if request.path == '/profile/' %}active{% endif %}">Profile</a>
+    </div>
+
+    <div class="profile-tile">
+        <img src="{{ user.profile.image.url }}" class="profile-pic" />
+        <div class="profile-info">
+            <h3>{{ user.username }}</h3>
+            <div class="stats">
+                <span class="stat-item">❤️ {{ user.profile.hearts }}</span>
+                <span class="stat-item">💰 {{ user.profile.coins }}</span>
+                <span class="stat-item">⭐ {{ user.profile.total_points }}</span>
+                <span class = "stat-item">🔥 {{ user.profile.current_streak }}</span>
+            </div>
+        </div>
+    </div>
+
+</nav>

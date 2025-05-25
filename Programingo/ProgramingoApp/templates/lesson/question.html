@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="question-page">
+
+  <!-- Progress bar -->
+<div class="progress-bar-container" aria-label="Question progress">
+  <div class="progress-bar-fill" style="width: {{ progress_percent }}%;"></div>
+</div>
+
+<div class="hearts-status">
+  <span class="heart-icon">❤️</span>
+  <span class="heart-count">{{ user_hearts }}</span>
+</div>
+
+  <!-- Question title -->
+  <h2 class="question-title">Question {{ current_question_number }} of {{ question_count }}</h2>
+
+  <!-- Question bubble -->
+  <div class="question-bubble">
+    {{ question.text }}
+  </div>
+
+  <!-- Answers row -->
+  <form method="post" id="question-form">
+    {% csrf_token %}
+    <div class="answers-row">
+      {% for answer in question.answers.all %}
+      <button type="button" class="answer-btn"
+              data-answer-id="{{ answer.id }}"
+              data-correct="{% if answer.is_correct %}true{% else %}false{% endif %}"
+              data-question-id="{{ question.id }}"
+              data-lesson-id="{{ lesson.id }}">
+        {{ answer.text }}
+      </button>
+      {% endfor %}
+    </div>
+
+    <!-- Footer -->
+  <footer class="question-footer {% if out_of_hearts %}out-of-hearts{% endif %}">
+    {% if out_of_hearts %}
+      <div class="feedback feedback-out">You're out of hearts 💔</div>
+      <a href="{% url 'home' %}" class="go-home-btn">Go to Homepage</a>
+    {% else %}
+      <button type="submit" id="check-btn" disabled>Check the answer</button>
+      <div class="feedback" id="feedback" aria-live="polite"></div>
+      <button id="next-btn" class="next-btn hidden"
+        data-lesson-id="{{ lesson.id }}"
+        data-current-page="{{ page }}">
+        Next question
+      </button>
+    {% endif %}
+  </footer>
+
+<script>
+  (() => {
+    const answers = document.querySelectorAll('.answer-btn');
+    const checkBtn = document.getElementById('check-btn');
+    const feedback = document.getElementById('feedback');
+    const nextBtn = document.getElementById('next-btn');
+    const form = document.getElementById('question-form');
+    let selectedAnswerId = null;
+    let answerChecked = false;
+
+    answers.forEach(btn => {
+      btn.addEventListener('click', () => {
+        if(answerChecked) return; // disable selection after checking
+        // Clear previous selection
+        answers.forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        selectedAnswerId = btn.dataset.answerId;
+        checkBtn.disabled = false;
+        feedback.textContent = '';
+      });
+    });
+
+  checkBtn.addEventListener('click', async e => {
+    e.preventDefault();
+    if (!selectedAnswerId || answerChecked) return;
+
+    answerChecked = true;
+    checkBtn.disabled = true;
+    checkBtn.style.display = 'none';
+
+    const selectedBtn = [...answers].find(b => b.dataset.answerId === selectedAnswerId);
+    const isCorrect = selectedBtn.dataset.correct === 'true';
+
+    // Show feedback immediately
+    if (isCorrect) {
+      feedback.textContent = "Nice!";
+      feedback.classList.add('correct');
+      selectedBtn.classList.add('correct');
+    } else {
+      feedback.textContent = "Get better!";
+      feedback.classList.add('wrong');
+      selectedBtn.classList.add('wrong');
+    }
+
+    // Prepare data for AJAX POST
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    const questionId = selectedBtn.dataset.questionId;
+    const lessonId = selectedBtn.dataset.lessonId;
+
+    try {
+      const response = await fetch('/ajax/check-answer/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'X-CSRFToken': csrfToken,
+        },
+        body: new URLSearchParams({
+          'question_id': questionId,
+          'answer_id': selectedAnswerId,
+          'lesson_id': lessonId
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.hearts !== undefined) {
+        const heartsDisplay = document.querySelector('.heart-count');
+        if (heartsDisplay) {
+          heartsDisplay.textContent = data.hearts;
+        }
+      }
+
+    } catch (err) {
+      console.error('Error checking answer:', err);
+    }
+
+    // Show ✔ or ✘ icon and reveal Next button shortly after
+    setTimeout(() => {
+      const icon = document.createElement('span');
+      icon.classList.add('result-icon');
+      icon.textContent = isCorrect ? '✔' : '✘';
+      feedback.appendChild(icon);
+      nextBtn.classList.remove('hidden');
+    }, 0);
+  });
+
+  // Handle Next button click: just navigate to next page URL
+  nextBtn.addEventListener('click', () => {
+    if (!answerChecked) return; // disallow if answer not checked
+
+    const lessonId = nextBtn.dataset.lessonId;
+    const currentPage = parseInt(nextBtn.dataset.currentPage, 10);
+    const nextPage = currentPage + 1;
+
+    // Adjust URL pattern as per your routing
+    window.location.href = `/lesson/${lessonId}/page/${nextPage}/`;
+  });
+})();
+</script>
+
+{% endblock %}

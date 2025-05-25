@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="result-container">
+  <div class="result-title">
+    {% if correct_count == total_questions %}
+      Good job!
+    {% else %}
+      Lesson ended!
+    {% endif %}
+  </div>
+
+  <img src="{% static 'css/images/Mascot 2.png' %}" alt="Mascot" class="result-image">
+
+  <div class="result-stats">
+    <div class="stat-tile">
+      Accuracy:<br>{{ accuracy }}%
+    </div>
+    <div class="stat-tile">
+      Points earned:<br>{{ points }}
+    </div>
+    <div class="stat-tile">
+      Time:<br>{{ time_spent }} seconds
+    </div>
+  </div>
+
+{# Streak counter below result-container #}
+{% if user.is_authenticated %}
+  <div class="streak-container" style="margin-top: 20px; text-align: center;">
+    <h3>🔥 Current Streak: {{ user.profile.current_streak }} day{% if user.profile.current_streak != 1 %}s{% endif %} 🔥</h3>
+  </div>
+{% endif %}
+
+  <a href="{% url 'end_lesson' lesson.id %}" class="home-link">Return to homepage</a>
+</div>
+
+
+{% endblock %}

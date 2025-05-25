@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="lesson-completed-message">
+    <h2>{{ lesson.title }} — Completed</h2>
+    <p>You have already completed this lesson. You cannot retake it.</p>
+    <a href="{% url 'home' %}">Return to homepage</a>
+</div>
+{% endblock %}

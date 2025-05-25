@@ -1,0 +1,95 @@
+.welcome-wrapper {
+  min-height: 90vh;           /* Full viewport height */
+  display: flex;
+  justify-content: center;     /* center horizontally */
+  align-items: center;         /* center vertically */
+  box-sizing: border-box;
+}
+
+.welcome-container {
+  display: flex;
+  align-items: center;
+  max-width: 900px;
+  width: 100%;
+  gap: 3rem;
+}
+
+/* Mascot image styles */
+.welcome-image img {
+  max-width: 500px;
+  width: 100%;
+}
+
+.welcome-row {
+  display: flex;
+  align-items: center;
+  max-width: 900px;
+  width: 100%;
+  gap: 3rem;
+  flex-wrap: nowrap;
+}
+
+/* Text container */
+.welcome-text {
+  flex: 1;
+}
+
+/* Heading style */
+.welcome-text h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #fff;
+}
+
+.highlight {
+  color: #e47a00d0;
+}
+
+.lead {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  color: #fef6e4;
+}
+
+.features-list {
+  list-style: none;
+  padding-left: 0;
+  font-size: 1.15rem;
+  color: #fef6e4;
+}
+
+.features-list li {
+  margin-bottom: 0.75rem;
+  padding-left: 1.2rem;
+  position: relative;
+}
+
+.features-list li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #ff8800;
+  font-weight: bold;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  body {
+    padding: 1rem;
+  }
+  .welcome-container {
+    flex-direction: column;
+    text-align: center;
+  }
+  .welcome-image img {
+    max-width: 260px;
+    margin-bottom: 1.5rem;
+  }
+  .welcome-text h1 {
+    font-size: 2.5rem;
+  }
+}

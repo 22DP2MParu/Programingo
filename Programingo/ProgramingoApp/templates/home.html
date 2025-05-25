@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="lessons-title">
+  <h1>Explore Your Lessons</h1>
+  <h3>Choose a lesson below to start learning and advancing your programming skills!</h3>
+</div>
+<div class="lessons-wrapper">
+  {% for lesson in lessons %}
+    <div class="lesson-wrapper-item">
+      {% if lesson.id in completed_lessons_ids %}
+        <div class="lesson-card lesson-completed" title="You have completed this lesson">
+          Lesson {{ lesson.title }} (Completed)
+        </div>
+      {% else %}
+        <a href="{% url 'lesson_page' lesson.id 1 %}" class="lesson-card">
+          Lesson {{ lesson.title }}
+        </a>
+      {% endif %}
+    </div>
+  {% empty %}
+    <p>No lessons available.</p>
+  {% endfor %}
+</div>
+{% endblock %}

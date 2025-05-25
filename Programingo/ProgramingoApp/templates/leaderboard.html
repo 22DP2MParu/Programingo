@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<h1 class="leaderboard-title">Leaderboard</h1>
+
+<div class="leaderboard-container">
+  {% for user in users %}
+    {% with forloop.counter as place %}
+      <div class="leaderboard-tile {% if user == current_user %}current-user{% endif %}">
+        <div class="leaderboard-place">
+          {% if place == 1 %}
+            🥇
+          {% elif place == 2 %}
+            🥈
+          {% elif place == 3 %}
+            🥉
+          {% else %}
+            {{ place }}
+          {% endif %}
+        </div>
+        <div class="leaderboard-avatar">{{ user.username|slice:":1"|upper }}</div>
+        <div class="leaderboard-username">{{ user.username }}</div>
+        <div class="leaderboard-points">{{ user.profile.total_points|default:0 }} pts</div>
+      </div>
+    {% endwith %}
+  {% empty %}
+    <p>No users found.</p>
+  {% endfor %}
+</div>
+{% endblock %}
