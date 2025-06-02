@@ -5,13 +5,18 @@ from django.utils import timezone
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.conf import settings
+from cloudinary.models import CloudinaryField
 
 class Lesson(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(max_length=100)
+    order = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.title
+    
+    class Meta:
+        ordering = ['order']
 
 
 class TheoryPage(models.Model):
@@ -30,9 +35,15 @@ class TheoryPage(models.Model):
 
 
 class Question(models.Model):
+    QUESTION_TYPES = (
+        ('multiple_choice', 'Multiple Choice'),
+        ('type_in', 'Type-in'),
+    )
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name='questions')
     text = models.TextField()
+    question_type = models.CharField(max_length=20, choices=QUESTION_TYPES, default='multiple_choice')
+
 
     def __str__(self):
         return f"Question: {self.text[:50]}"
@@ -69,6 +80,7 @@ class UserProfile(models.Model):
     current_streak = models.IntegerField(default=0)
     last_lesson_date = models.DateField(null=True, blank=True)
     coins = models.IntegerField(default=0)
+    avatar = CloudinaryField('image', blank=True, null=True)
 
     def __str__(self):
         return f"{self.user.username} Profile"
@@ -115,3 +127,45 @@ class UserChallengeProgress(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.challenge.title}"
+    
+
+class TrainingModule(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    title = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.title
+
+
+class TrainingQuestion(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    training = models.ForeignKey(TrainingModule, on_delete=models.CASCADE, related_name='questions')
+    text = models.TextField()
+
+    def __str__(self):
+        return f"Question: {self.text[:50]}"
+
+
+class TrainingAnswer(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    question = models.ForeignKey(TrainingQuestion, on_delete=models.CASCADE, related_name='answers')
+    text = models.CharField(max_length=255)
+    is_correct = models.BooleanField(default=False)
+
+    def __str__(self):
+        status = "(correct)" if self.is_correct else ""
+        return f"Answer: {self.text[:50]} {status}"
+
+
+class TrainingProgress(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    training = models.ForeignKey(TrainingModule, on_delete=models.CASCADE)
+    completed = models.BooleanField(default=False)
+    completed_at = models.DateTimeField(null=True, blank=True)
+    earned_heart = models.BooleanField(default=False)
+
+    class Meta:
+        unique_together = ('user', 'training')
+
+    def __str__(self):
+        return f"{self.user.username} - {self.training.title} - {'Done' if self.completed else 'In Progress'}"

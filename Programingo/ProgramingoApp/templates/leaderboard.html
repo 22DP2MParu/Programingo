@@ -18,7 +18,13 @@
             {{ place }}
           {% endif %}
         </div>
-        <div class="leaderboard-avatar">{{ user.username|slice:":1"|upper }}</div>
+
+        {% if user.profile.avatar %}
+          <div class="leaderboard-avatar" style="background-image: url('{{ user.profile.avatar.url }}');"></div>
+        {% else %}
+          <div class="leaderboard-avatar fallback-avatar">{{ user.username|slice:":1"|upper }}</div>
+        {% endif %}
+        
         <div class="leaderboard-username">{{ user.username }}</div>
         <div class="leaderboard-points">{{ user.profile.total_points|default:0 }} pts</div>
       </div>

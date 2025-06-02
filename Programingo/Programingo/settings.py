@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import cloudinary
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'ProgramingoApp',
     'nested_admin',
+    'cloudinary',
+    'cloudinary_storage',
 ]
 
 MIDDLEWARE = [
@@ -127,3 +130,17 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+cloudinary.config(
+    cloud_name = 'dkhydalit',
+    api_key = '397653888937778',
+    api_secret = 'qht1iDJfIgIS_bpjVBQukHZpTWM'
+)
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'dkhydalit',
+    'API_KEY': '397653888937778',
+    'API_SECRET': 'qht1iDJfIgIS_bpjVBQukHZpTWM'
+}

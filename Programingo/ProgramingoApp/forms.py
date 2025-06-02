@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 import re
+from .models import UserProfile
 
 input_style = {'class': 'auth-input', 'autocomplete': 'off'}
 
@@ -77,3 +78,27 @@ class CustomRegistrationForm(forms.Form):
         if password and confirm_password and password != confirm_password:
             self.add_error('confirm_password', "Passwords do not match.")
 
+class EmailChangeForm(forms.Form):
+    new_email = forms.EmailField(label="New Email")
+    password = forms.CharField(widget=forms.PasswordInput, label="Current Password")
+
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        super().__init__(*args, **kwargs)
+
+    def clean_password(self):
+        password = self.cleaned_data['password']
+        if not self.user.check_password(password):
+            raise forms.ValidationError("Incorrect password.")
+        return password
+
+    def clean_new_email(self):
+        new_email = self.cleaned_data['new_email']
+        if User.objects.filter(email=new_email).exclude(pk=self.user.pk).exists():
+            raise forms.ValidationError("This email is already in use.")
+        return new_email
+
+class AvatarUploadForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['avatar']

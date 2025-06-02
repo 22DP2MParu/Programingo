@@ -25,9 +25,6 @@ urlpatterns = [
     #pages
     path('', views.welcome, name='welcome'),
     path('home/', views.home, name='home'),
-    path('training/', views.training, name='training'),
-    path('shop/', views.shop, name='shop'),
-    path('profile/', views.profile, name='profile'),
 
     #lessons
     path('lesson/<uuid:lesson_id>/page/<int:page>/', views.lesson_page, name='lesson_page'),
@@ -41,4 +38,20 @@ urlpatterns = [
     #Challenges
     path('challenges/', challenges_view, name='challenges'),
     path('challenges/redeem/<int:progress_id>/', views.redeem_challenge_reward, name='redeem_challenge_reward'),
+
+    #shop
+    path('shop/', views.shop_view, name='shop'),
+    path('buy-hearts/', views.buy_hearts, name='buy_hearts'),
+
+    #profile
+    path('profile/', views.profile, name='profile'),
+    path('profile/change-email/', views.change_email_view, name='change_email'),
+    path('profile/change-password/', views.change_password_view, name='change_password'),
+    path('profile/update-avatar/', views.update_avatar, name='update_avatar'),
+
+    #trainings
+    path('training/', views.training, name='training'),
+    path('training/<uuid:training_id>/question/<int:page>/', views.training_question, name='training_question'),
+    path('training/<uuid:training_id>/result/', views.training_result, name='training_result'),
 ]
+

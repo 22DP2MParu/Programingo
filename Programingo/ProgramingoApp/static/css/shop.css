@@ -1,0 +1,133 @@
+/* Overall container */
+.shop-container {
+  max-width: 600px;
+  margin: 3rem auto;
+  padding: 2rem;
+  background-color: #1e1e1e;
+  border-radius: 1.5rem;
+  border: 1px solid #333;
+  color: #f4f4f4;
+  font-family: 'Lexend', sans-serif;
+}
+
+/* Title */
+.shop-container h2 {
+  text-align: center;
+  font-size: 2.2rem;
+  color: #ffffff;
+}
+
+.cant-buy{
+  color:#888;
+  text-align: center;
+}
+/* Hearts counter display */
+#preview {
+  text-align: center;
+  font-size: 1.4rem;
+  margin-bottom: 1.5rem;
+  color: #ffcc66;
+}
+
+/* Coin & heart display */
+.coins-display {
+  text-align: center;
+  font-size: 1.1rem;
+  margin-bottom: 1.2rem;
+  color: #ffc75f;
+}
+
+/* Slider Base */
+input[type="range"] {
+  -webkit-appearance: none;
+  width: 100%;
+  margin: 1rem 0;
+  background: transparent;
+}
+
+/* Track - WebKit (Chrome, Safari, Edge) */
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 8px;
+  background: linear-gradient(to right, #ffa733 var(--slider-percent, 0%), #333 var(--slider-percent, 0%));
+  border-radius: 4px;
+}
+
+/* Thumb - WebKit */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 20px;
+  width: 20px;
+  background-color: #ffa733;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-top: -6px; /* Center the thumb */
+  border: 2px solid #1e1e1e;
+  transition: background-color 0.2s ease;
+}
+
+/* Track - Firefox */
+input[type="range"]::-moz-range-track {
+  height: 8px;
+  background: #333;
+  border-radius: 4px;
+}
+
+input[type="range"]::-moz-range-progress {
+  height: 8px;
+  background-color: #ffa733;
+  border-radius: 4px;
+}
+
+input[type="range"]::-moz-range-thumb {
+  height: 20px;
+  width: 20px;
+  background-color: #ffa733;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid #1e1e1e;
+}
+
+/* Disabled styles */
+input[type="range"]:disabled::-webkit-slider-thumb,
+input[type="range"]:disabled::-moz-range-thumb {
+  background-color: #888;
+  border: 2px solid #555;
+}
+
+input[type="range"]:disabled::-webkit-slider-runnable-track,
+input[type="range"]:disabled::-moz-range-track {
+  background-color: #444;
+}
+
+/* Buy button */
+button[type="submit"] {
+  background-color: #e46f22;
+  border: none;
+  color: #fff;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+  font-weight: bold;
+}
+
+button[type="submit"]:hover {
+  background-color: #ff8822;
+}
+
+/* Feedback message */
+#result {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+#result.success {
+  color: #8fff8f;
+}
+
+#result.error {
+  color: #ff6b6b;
+}

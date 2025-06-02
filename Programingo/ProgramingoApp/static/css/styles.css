@@ -7,7 +7,36 @@ body {
     padding: 0;
 }
 
+.layout {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+}
 
+.page-wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+.main-content {
+    margin-left: 16rem;
+    padding: 2rem;
+    box-sizing: border-box;
+    width: calc(100% - 16rem);
+}
+
+.main-content {
+    margin-left: 16rem;
+    padding: 2rem;
+    box-sizing: border-box;
+    width: calc(100% - 16rem);
+}
+
+.main-content.no-sidebar-margin {
+    margin-left: 0 !important;
+    flex-grow: 1;
+    width: 100%;
+}
 
 /*Navbar styles*/
 
@@ -213,7 +242,6 @@ body {
   z-index: 20;
 }
 
-/* Completed lesson style - flat green */
 .lesson-completed {
   background: #aeffa7;
   color: #225825;
@@ -223,40 +251,44 @@ body {
   pointer-events: none;
 }
 
-/* Yellow dot positioned ON the yellow line, next to tile */
-/* Make sure the dot does NOT overlap the tile */
+.lesson-locked {
+  background: #f1f1f1;
+  color: #aaa;
+  border: 2px dashed #ccc;
+  pointer-events: none;
+  cursor: not-allowed;
+  box-shadow: none;
+  opacity: 0.7;
+}
+
 .lesson-card::before {
   content: "";
   position: absolute;
-  left: -1.5rem;  /* left of tile, on the line at 1rem + dot offset */
+  left: -1.5rem;
   top: 50%;
   transform: translateY(-50%);
   width: 1.2rem;
   height: 1.2rem;
   background: #ffcc33;
   border-radius: 50%;
-  box-shadow: 0 0 6px #ffcc3399; /* subtle glow */
+  box-shadow: 0 0 6px #ffcc3399;
   z-index: 15;
 }
 
-/* Stagger every even lesson card slightly to the right */
 .lesson-card:nth-child(even) {
   margin-left: 2rem;
   transform: rotate(-1deg);
 }
 
-/* Stagger every odd lesson card slightly to the left */
 .lesson-card:nth-child(odd) {
   transform: rotate(1deg);
 }
 
-/* Completed lessons keep stagger */
 .lesson-completed:nth-child(even) {
   margin-left: 2rem;
   transform: rotate(-0.5deg);
 }
 
-/* Responsive: smaller cards on mobile */
 @media (max-width: 600px) {
   .lessons-wrapper {
     max-width: 100%;
@@ -391,51 +423,29 @@ body {
     color: #ddd;
 }
 
-/* Optional: color icons with subtle tint */
+.logout-btn {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #ff4d4d;
+  color: white;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.logout-btn:hover {
+  background-color: #e60000;
+}
+
 .profile-info .stat-item:nth-child(1) {
-    color: #ff4d4d; /* hearts red */
+    color: #ff4d4d;
 }
 .profile-info .stat-item:nth-child(2) {
-    color: #ffd700; /* coins gold */
+    color: #ffd700;
 }
 .profile-info .stat-item:nth-child(3) {
-    color: #ffcc33; /* points yellow */
+    color: #ffcc33;
 }
-
-
-
-
-
-.page-wrapper {
-    display: flex;
-    min-height: 100vh;
-}
-
-.main-content {
-    margin-left: 16rem;
-    padding: 2rem;
-    box-sizing: border-box;
-    width: calc(100% - 16rem);
-}
-
-.main-content {
-    margin-left: 16rem;
-    padding: 2rem;
-    box-sizing: border-box;
-    width: calc(100% - 16rem);
-}
-
-.main-content.no-sidebar-margin {
-    margin-left: 0 !important;
-    flex-grow: 1;
-    width: 100%;
-}
-
-.layout {
-    display: flex;
-    width: 100%;
-    min-height: 100vh;
-}
-
-
-

@@ -23,16 +23,45 @@
     <link rel="stylesheet" href="{% static 'css/welcome.css' %}">
     {% endif %}
 
+    {% if request.path == '/shop/' %}
+    <link rel="stylesheet" href="{% static 'css/shop.css' %}">
+    {% endif %}
+
+    {% if request.path == '/profile/' %}
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+    {% endif %}
+
+    {% if '/training/' in request.path %}
+    <link rel="stylesheet" href="{% static 'css/lesson.css' %}">
+    {% endif %}
+
 </head>
 <body>
 
 {% if user.is_authenticated %}
     <div class="layout">
-        {% if not request.path|slice:":8" == "/lesson/" %}
+        {% if request.path|slice:":8" == "/lesson/" %}
+        {% if request.path|length > 8 %}
+
+        {% else %}
             <div class="sidebar">
-                {% include 'side_nav.html' %}
+            {% include 'side_nav.html' %}
             </div>
         {% endif %}
+        {% elif request.path|slice:":10" == "/training/" %}
+        {% if request.path|length > 10 %}
+
+        {% else %}
+            <div class="sidebar">
+            {% include 'side_nav.html' %}
+            </div>
+        {% endif %}
+        {% else %}
+        <div class="sidebar">
+            {% include 'side_nav.html' %}
+        </div>
+        {% endif %}
+        
         <main class="main-content {% if '/lesson/' in request.path %}no-sidebar-margin{% endif %}">
             {% block content %}{% endblock %}
         </main>

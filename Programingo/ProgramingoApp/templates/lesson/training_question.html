@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="question-page">
+
+  <!-- Question Text -->
+  <div class="question-bubble">
+    {{ question.text }}
+  </div>
+
+  <!-- Question Form -->
+  <form method="post" id="question-form">
+    {% csrf_token %}
+    <input type="hidden" name="answer" id="selected-answer" required>
+
+    <div class="answers-row">
+      {% for answer in question.answers.all %}
+        <button type="button" class="answer-btn"
+                data-answer-id="{{ answer.id }}"
+                data-correct="{% if answer.is_correct %}true{% else %}false{% endif %}">
+          {{ answer.text }}
+        </button>
+      {% endfor %}
+    </div>
+
+    <!-- Footer -->
+    <footer class="question-footer">
+      <button type="submit" id="check-btn" disabled>Check the answer</button>
+      <div class="feedback" id="feedback" aria-live="polite"></div>
+      <button id="next-btn" class="next-btn hidden"
+        data-training-id="{{ training.id }}"
+        data-current-question="{{ current_question_number }}">
+        Next question
+      </button>
+    </footer>
+  </form>
+</div>
+
+<script>
+(() => {
+  const answers = document.querySelectorAll('.answer-btn');
+  const checkBtn = document.getElementById('check-btn');
+  const feedback = document.getElementById('feedback');
+  const nextBtn = document.getElementById('next-btn');
+  const form = document.getElementById('question-form');
+  const hiddenInput = document.getElementById('selected-answer');
+  let selectedAnswerId = null;
+  let answerChecked = false;
+
+  answers.forEach(btn => {
+    btn.addEventListener('click', () => {
+      if(answerChecked) return;
+      answers.forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      hiddenInput.value = btn.getAttribute('data-answer-id');
+      selectedAnswerId = btn.getAttribute('data-answer-id');
+      checkBtn.disabled = false;
+      feedback.textContent = '';
+    });
+  });
+
+  checkBtn.addEventListener('click', e => {
+    e.preventDefault();
+    if(answerChecked) return;
+    answerChecked = true;
+    checkBtn.disabled = true;
+    checkBtn.style.display = 'none';
+
+    const selectedBtn = [...answers].find(b => b.getAttribute('data-answer-id') === selectedAnswerId);
+    const isCorrect = selectedBtn.getAttribute('data-correct') === 'true';
+
+    feedback.textContent = isCorrect ? "Nice!" : "Get better!";
+    feedback.classList.add(isCorrect ? 'correct' : 'wrong');
+    selectedBtn.classList.add(isCorrect ? 'correct' : 'wrong');
+
+    setTimeout(() => {
+      const icon = document.createElement('span');
+      icon.classList.add('result-icon');
+      icon.textContent = isCorrect ? '✔' : '✘';
+      feedback.appendChild(icon);
+      nextBtn.classList.remove('hidden');
+    }, 0);
+  });
+
+  nextBtn.addEventListener('click', () => {
+    if(!answerChecked) return;
+    const trainingId = nextBtn.dataset.trainingId;
+    const currentPage = parseInt(nextBtn.dataset.currentQuestion, 10);
+    const nextPage = currentPage + 1;
+    window.location.href = `/training/${trainingId}/page/${NextPage}/`;
+  });
+})();
+</script>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="lessons-title">
+  <h1>Available Trainings</h1>
+  <h3>Choose a training module to practice your knowledge and improve your skills!</h3>
+</div>
+
+<div class="lessons-wrapper">
+  {% for training in trainings %}
+    <div class="lesson-wrapper-item">
+      <a href="{% url 'training_question' training.id 1 %}" class="lesson-card">
+        {{ training.title }}
+      </a>
+    </div>
+  {% empty %}
+    <p>No trainings available.</p>
+  {% endfor %}
+</div>
+{% endblock %}

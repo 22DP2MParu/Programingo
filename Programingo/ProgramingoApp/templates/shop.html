@@ -1,92 +1,108 @@
 {% extends "base.html" %}
-
-{% block title %}Shop{% endblock %}
+{% load static %}
 
 {% block content %}
-<h1 style="text-align: center;">Shop</h1>
-<p style="text-align: center;">Buy hearts to unlock extra features!</p>
-
 <div class="shop-container">
-    <div class="item-tile">
-        <div class="item-icon">❤️</div>
-        <div class="price-row">
-            <span class="price">100</span>
-            <span class="coin">💰</span>
-        </div>
-        <label for="quantity" style="margin-top: 10px; font-weight: bold;">Quantity:</label>
-        <input type="number" id="quantity" name="quantity" min="1" value="1" class="quantity-input">
-        <button class="buy-btn">Buy</button>
-    </div>
+  <h2>Buy Hearts ❤️</h2>
+
+  <div class="heart-shop-box">
+    <p class="coins-display">
+      You have <strong>{{ profile.hearts }}</strong> hearts and <strong>{{ profile.coins }}</strong> coins.
+    </p>
+
+    {% if max_purchasable > 0 %}
+      <form id="heart-purchase-form" method="post">
+        {% csrf_token %}
+
+        <label for="heart-slider">How many hearts do you want to buy?</label>
+        <input
+          type="range"
+          id="heart-slider"
+          name="heart_count"
+          min="1"
+          max="{{ max_purchasable }}"
+          value="1"
+        />
+
+        <p id="slider-value">1 heart = 10 coins</p>
+
+        <button type="submit">Buy</button>
+      </form>
+    {% else %}
+      <p class="cant-buy">You can't buy more hearts right now.</p>
+    {% endif %}
+
+    <p id="purchase-feedback"></p>
+  </div>
 </div>
 
-<style>
-.shop-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 40px;
-}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const slider = document.getElementById('heart-slider');
+  const sliderValue = document.getElementById('slider-value');
+  const form = document.getElementById('heart-purchase-form');
+  const feedback = document.getElementById('purchase-feedback');
 
-.item-tile {
-    background-color: #2b2b2b; /* light gray */
-    border: 3px solid #d35400; /* dark orange */
-    padding: 25px 40px;
-    border-radius: 10px;
-    text-align: center;
-    width: 180px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-}
+  if (slider) {
+    slider.addEventListener('input', function () {
+      const hearts = slider.value;
+      sliderValue.textContent = `${hearts} heart${hearts > 1 ? 's' : ''} = ${hearts * 10} coins`;
+    });
+  } else {
+    console.error('Slider element not found');
+  }
 
-.item-icon {
-    font-size: 60px;
-    color: #e74c3c; /* red heart */
-}
+  if (form) {
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      console.log('Form submitted');
 
-.price-row {
-    font-size: 22px;
-    font-weight: bold;
-    color: #ffffff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-}
+      const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-.buy-btn {
-    background-color: #d35400;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    padding: 10px 0;
-    font-weight: bold;
-    cursor: pointer;
-    width: 100%;
-    transition: background-color 0.3s ease;
-}
+      fetch("{% url 'buy_hearts' %}", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'X-CSRFToken': csrfToken,
+        },
+        body: new URLSearchParams(new FormData(form))
+      })
+      .then(res => {
+        if (!res.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return res.json();
+      })
+      .then(data => {
+        if (!feedback) {
+          console.error('Feedback element not found');
+          return;
+        }
 
-.buy-btn:hover {
-    background-color: #b34700;
-}
+        if (data.success) {
+          feedback.textContent = `✅ You now have ${data.hearts} hearts and ${data.coins} coins.`;
+          feedback.style.color = '#8fff8f';
 
-.quantity-input {
-    width: 80px;
-    padding: 8px 12px;
-    font-size: 18px;
-    border: 2px solid #ccc;
-    border-radius: 8px;
-    text-align: center;
-    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    outline: none;
-    margin-top: 5px;
-}
-
-.quantity-input:focus {
-    border-color: #d35400;
-    box-shadow: 0 0 8px rgba(211, 84, 0, 0.6);
-}
-</style>
+          setTimeout(() => {
+            console.log('Reloading page after purchase');
+            location.reload();
+          }, 1200);
+        } else {
+          feedback.textContent = data.error || '❌ Transaction failed.';
+          feedback.style.color = '#ff6b6b';
+        }
+      })
+      .catch(error => {
+        console.error('Fetch error:', error);
+        if (!feedback) return;
+        feedback.textContent = '❌ Something went wrong.';
+        feedback.style.color = '#ff6b6b';
+      });
+    });
+  } else {
+    console.error('Form element not found');
+  }
+});
+</script>
 
 {% endblock %}
